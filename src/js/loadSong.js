@@ -2,7 +2,7 @@
     let view={
         el:'#uploadSong-container',
         template:`
-        <div class="uploadSongButton">
+        <div id="uploadSongButton" class="uploadSongButton">
             <p>点击或拉拽歌曲到此处</p>
             <p>即可上传歌曲</p>
         </div>
