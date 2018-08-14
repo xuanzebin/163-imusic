@@ -6,7 +6,6 @@
         },
         template:`
         <form>
-            <h1>编辑新建歌曲</h1>
             <div class="row">
                 <label>歌曲：</label>
                 <input name="name" type="text" value="__name__">
@@ -24,17 +23,54 @@
             </div>
         </form>
         `,
-        render(data){
+        render(data={}){
             let playholders=['name','singer','url']
             let html=this.template
             playholders.map((string)=>{
-                html=html.replace(`__${string}__`,data[string])
+                html=html.replace(`__${string}__`,data[string]||'')
             })
-            $(this.el).html(html)
+            this.$el.html(html)
+            if (data.id){
+                this.$el.find('form').prepend('<h1>编辑歌曲</h1>')
+            } else {
+                this.$el.find('form').prepend('<h1>新建歌曲</h1>')
+            }
         }
     }
     let model={
-        data:{name:'',singer:'',url:''}
+        data:{name:'',singer:'',url:''},
+        save(){
+            var Song = AV.Object.extend('Song');
+            var song = new Song();
+            let {name,singer,url}=this.data
+            song.set('name',name)
+            song.set('singer',singer)
+            song.set('url',url)
+            return song.save().then(function (todo) {
+                return todo
+                console.log('保存成功')
+            }, function (error) {
+                console.error(error);
+            });
+        },
+        edit(){
+            // 第一个参数是 className，第二个参数是 objectId
+            var song = AV.Object.createWithoutData('Song', this.data.id);
+            // 修改属性
+            let {name,singer,url}=this.data
+            song.set('name',name)
+            song.set('singer',singer)
+            song.set('url',url)
+            // 保存到云端
+            return song.save().then((response)=>{
+                return response
+                console.log('response')
+                console.log(response)
+            })
+        },
+        resetData(){
+            this.data={}
+        }
     }
     let controller={
         init(view,model){
@@ -43,17 +79,28 @@
             this.model=model
             this.bindEvents()
             this.view.render(this.model.data)
-            window.eventHub.on('upload',(data)=>{
-                this.model.data.name=data.name
-                this.model.data.url=data.url
+            window.eventHub.on('new',(data)=>{
+                if (this.model.data.id && !data){
+                    this.model.data={}
+                } else {
+                    this.model.data.id=''
+                    Object.assign(this.model.data, data)
+                }
+                this.view.render(this.model.data)
+            })
+            window.eventHub.on('selected',(data)=>{
+                this.model.data=data
                 this.view.render(this.model.data)
             })
         },
         bindEvents(){
             this.view.$el.on('submit','form',(e)=>{
                 e.preventDefault()
-                this.createSong()
-                this.saveSong()
+                if (this.model.data.id){
+                    this.editSong()
+                } else{
+                    this.createSong()
+                }
             })
         },
         createSong(){
@@ -63,21 +110,26 @@
                 data[string]=this.view.$el.find(`input[name=${string}]`).val()
             })
             this.model.data=data
-            let copyData=JSON.parse(JSON.stringify(this.model.data))
-            window.eventHub.emit('create',copyData)
+            this.model.save().then((response)=>{
+                this.model.data.id=response.id    
+                let copyData=JSON.parse(JSON.stringify(this.model.data))
+                window.eventHub.emit('create',copyData)
+                this.model.resetData()
+                this.view.render(this.model.data)
+            })
         },
-        saveSong(){
-            var Song = AV.Object.extend('Song');
-            var song = new Song();
-            let {name,singer,url}=this.model.data
-            song.set('name',name)
-            song.set('singer',singer)
-            song.set('url',url)
-            song.save().then(function (todo) {
-                alert('保存成功')
-            }, function (error) {
-              console.error(error);
-            });
+        editSong(){
+            let needs='name singer url'.split(' ')
+            let data={}
+            needs.map((string)=>{
+                data[string]=this.view.$el.find(`input[name=${string}]`).val()
+            })
+            Object.assign(this.model.data, data)
+            console.log(this.model.data)
+            this.model.edit().then((response)=>{
+                let copyData=JSON.parse(JSON.stringify(this.model.data))
+                window.eventHub.emit('updata',copyData)
+            })
         }
     }
     controller.init(view,model)

@@ -32,6 +32,9 @@ body{
     border-bottom:2px solid #ddd;
     text-align: center;
 }
+.newSongs.active{
+    background: #ddd;
+}
 .songList-container{
     flex-grow:1;
 }
@@ -39,6 +42,9 @@ body{
     padding:10px 0 10px 10px;
     border-bottom:1px solid #ddd;
     
+}
+.songList-container li.active{
+    background: #ddd;
 }
 .uploadSong-container{
     height:200px;
@@ -62,13 +68,14 @@ body{
 /* main */
 .page>main{
     padding:20px;
+    background: #ddd;
 }
 .page>main h1{
     padding-bottom:10px;
     padding-left:2em;
 }
 .page>main>form{
-    border:2px #ddd solid;
+    border:2px black solid;
     display: inline-block;
     padding-right:20px;
     padding-bottom:20px;

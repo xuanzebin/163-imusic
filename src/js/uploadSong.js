@@ -54,9 +54,10 @@
                         console.log('sourceLink',sourceLink)
                         let data={
                             name:response.key,
+                            singer:'',
                             url:sourceLink
                         }
-                        window.eventHub.emit('upload',data)
+                        window.eventHub.emit('new',data)
                     },
                     'Error': function(up, err, errTip) {
                         //上传出错时,处理相关的事情
