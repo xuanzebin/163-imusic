@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./css/default.css">
+    <link rel="stylesheet" href="./css/loading.css">
     <title>云音乐管理后台</title>
 </head>
 <body>
@@ -16,16 +17,18 @@
         </aside>
         <main></main>
     </div>
+    <div id="loadingWrapper" class="loadingWrapper"></div>
     <script src="./vendor/jquery-3.3.1.min.js"></script>
     <script src="../node_modules/plupload/js/moxie.js"></script>
     <script src="../node_modules/plupload/js/plupload.min.js"></script>
     <script src="../node_modules/qiniu-js/dist/qiniu.min.js"></script>  
     <script src="../node_modules/leancloud-storage/dist/av-min.js"></script>
-    <script src="./js/initializers.js"></script>
-    <script src="./js/eventHub.js"></script>
-    <script src="./js/newSongs.js"></script>
-    <script src="./js/songsList.js"></script>
-    <script src="./js/uploadSong.js"></script>
-    <script src="./js/songsForm.js"></script>
+    <script src="./js/initializers/av.js"></script>
+    <script src="./js/admin/eventHub.js"></script>
+    <script src="./js/admin/newSongs.js"></script>
+    <script src="./js/admin/songsList.js"></script>
+    <script src="./js/admin/uploadSong.js"></script>
+    <script src="./js/admin/songsForm.js"></script>
+    <script src="./js/admin/loading.js"></script>
 </body>
 </html>

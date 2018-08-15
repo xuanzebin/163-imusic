@@ -14,15 +14,19 @@
             this.$el.html(this.template)
             let {songs}=data
             let liList=songs.map((song)=>{
-                return $('<li></li>').text(song.name).attr('data-song-id',song.id)
+                let $li=$('<li></li>').text(song.name).attr('data-song-id',song.id)
+                if (song.id===data.selectedId){
+                    this.highLight($li)
+                }
+                return $li
             }) 
             this.$el.find('ul').empty()
             liList.map((domList)=>{
                 this.$el.find('ul').append(domList)
             })
         },
-        highLight(id){
-            this.$el.find(`li[data-song-id=${id}]`).addClass('active').siblings().removeClass('active')  
+        highLight($li){
+            $li.addClass('active').siblings().removeClass('active')  
         }
     }
     let model={
@@ -74,10 +78,6 @@
                     $(li).removeClass('active')
                 })
             })
-            window.eventHub.on('selected',(data)=>{
-                let songID=data.id
-                this.view.highLight(songID)
-            })
             window.eventHub.on('updata',(data)=>{
                 this.model.updata(data)
                 this.view.render(this.model.data)
@@ -86,7 +86,8 @@
         bindEvents(){
             this.view.$el.on('click','li',(e)=>{
                 let songID=e.currentTarget.getAttribute('data-song-id')
-                this.model.selectedId=songID
+                this.model.data.selectedId=songID
+                this.view.render(this.model.data)
                 let songs=this.model.data.songs
                 let data
                 for (let i=0;i<songs.length;i++){
