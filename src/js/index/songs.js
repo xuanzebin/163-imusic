@@ -10,7 +10,7 @@
                 <div class="songMessage">
                     <div class="songName">{{name}}</div>
                     <div class="songSinger">
-                        <i class="sghot"></i><span>{{singer}}</span>
+                        <span>{{singer}}</span>
                     </div>
                 </div>
                 <div class="playButton"></div>
