@@ -11,15 +11,18 @@
         `,
         render(data){
             this.template=this.template.replace('{{url}}',data.url)
-            console.log(this.template)
+            this.$el.find('.coverWrapper').css('background-image',`url(${data.cover})`)
+            this.$el.find('.backgroundCover').css('background-image',`url(${data.cover})`)
             this.$el.append(this.template)
         },
         playSong(){
             this.$el.find('#play').removeClass('active')
+            this.$el.find('#coverWrapper').addClass('active')
             this.$el.find('audio')[0].play()
         },
         pauseSong(){
             this.$el.find('#play').addClass('active')
+            this.$el.find('#coverWrapper').removeClass('active')
             this.$el.find('audio')[0].pause()
         }
     }

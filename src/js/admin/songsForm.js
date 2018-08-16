@@ -19,12 +19,16 @@
                 <input name="url" type="text" value="__url__">
             </div>
             <div class="row">
+                <label>封面地址：</label>
+                <input name="cover" type="text" value="__cover__">
+            </div>
+            <div class="row">
                 <input type="submit" value="save"></button>
             </div>
         </form>
         `,
         render(data={}){
-            let playholders=['name','singer','url']
+            let playholders=['name','singer','url','cover']
             let html=this.template
             playholders.map((string)=>{
                 html=html.replace(`__${string}__`,data[string]||'')
@@ -38,14 +42,15 @@
         }
     }
     let model={
-        data:{name:'',singer:'',url:''},
+        data:{name:'',singer:'',url:'',cover:''},
         save(){
             var Song = AV.Object.extend('Song');
             var song = new Song();
-            let {name,singer,url}=this.data
+            let {name,singer,url,cover}=this.data
             song.set('name',name)
             song.set('singer',singer)
             song.set('url',url)
+            song.set('cover',cover)
             return song.save().then(function (todo) {
                 return todo
                 console.log('保存成功')
@@ -61,11 +66,10 @@
             song.set('name',name)
             song.set('singer',singer)
             song.set('url',url)
+            song.set('cover',cover)
             // 保存到云端
             return song.save().then((response)=>{
                 return response
-                console.log('response')
-                console.log(response)
             })
         },
         resetData(){
@@ -86,6 +90,7 @@
                     this.model.data.id=''
                     Object.assign(this.model.data, data)
                 }
+                console.log(this.model.data)
                 this.view.render(this.model.data)
             })
             window.eventHub.on('selected',(data)=>{
@@ -104,7 +109,7 @@
             })
         },
         createSong(){
-            let needs='name singer url'.split(' ')
+            let needs='name singer url cover'.split(' ')
             let data={}
             needs.map((string)=>{
                 data[string]=this.view.$el.find(`input[name=${string}]`).val()
@@ -119,7 +124,7 @@
             })
         },
         editSong(){
-            let needs='name singer url'.split(' ')
+            let needs='name singer url cover'.split(' ')
             let data={}
             needs.map((string)=>{
                 data[string]=this.view.$el.find(`input[name=${string}]`).val()

@@ -18,7 +18,6 @@ main{
     top:0; left:0;
     width:100vw;
     height:100vh;
-    background-image:  url('../img/songImg/歌曲封面.jpg');
     background-size:cover;
     background-position:center center;
     filter: blur(3px);
@@ -48,6 +47,7 @@ main .cdPlay>img{
     top:0;left:45%;
     width:26.6%;
     z-index: 1;
+    max-width: 110px;
 }
 main .cdPlay{
     width:100%; 
@@ -62,9 +62,13 @@ main .cdPlay{
     position: relative;
     width:82.6%;
     margin:0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 .disc>img{
     width:100%;
+    max-width: 342px;
 }
 .disc_light{
     position:absolute;
@@ -76,18 +80,29 @@ main .cdPlay{
 }
 .disc_light>img{
     width:100%;
+    max-width: 342px;
 }
 .coverWrapper{
     position:absolute;
     border-radius:50%;
     width:62%;height:62%;
+    max-width: 212px;
+    max-height: 212px;
     overflow: hidden;
-    background-image: url(../img/songImg/歌曲封面.jpg);
     background-size:cover;
     background-position:center center;
     display:flex;
     align-items: center;
     justify-content: center;
+    animation: circle 20s infinite linear; 
+    animation-play-state: paused;
+}
+.coverWrapper.active{
+    animation-play-state: running;
+}
+@keyframes circle{
+    0% {transform: rotate(0deg); } 
+    100% {transform: rotate(360deg); } 
 }
 .coverWrapper #play{
     display: none;
