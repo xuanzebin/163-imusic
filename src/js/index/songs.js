@@ -5,8 +5,8 @@
             this.$el=$(this.el)
         },
         template:`
-        <li data-song-id='{{id}}'>
-            <a href="{{url}}">
+        <li>
+            <a href="./song.html?id={{id}}">
                 <div class="songMessage">
                     <div class="songName">{{name}}</div>
                     <div class="songSinger">
@@ -25,7 +25,6 @@
                 need.map((string)=>{
                     return li=li.replace(`{{${string}}}`,songData[string])
                 })
-                console.log('render',li)
                 return this.$el.append(li)
             })
         }

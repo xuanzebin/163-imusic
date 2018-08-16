@@ -5,11 +5,9 @@
             this.$el=$(this.el)
         },
         show(){
-            console.log('show')
             this.$el.addClass('active')
         },
         hide(){
-            console.log('hide')
             this.$el.removeClass('active')
         }
     }
@@ -23,7 +21,6 @@
         },
         bindEventHub(){
             window.eventHub.on('tabSwitch',(id)=>{
-                console.log(id)
                 if (id==='page-1'){
                     this.view.show()
                 }else {

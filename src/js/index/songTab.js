@@ -25,7 +25,6 @@
                 this.model.select=e.currentTarget.getAttribute('data-page-list')
                 this.view.highLight($(e.currentTarget))
                 let copy=JSON.parse(JSON.stringify(this.model.select))
-                console.log('copy',copy)
                 window.eventHub.emit('tabSwitch',copy)
             })
         }
