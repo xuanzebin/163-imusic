@@ -25,6 +25,7 @@
                 need.map((string)=>{
                     return li=li.replace(`{{${string}}}`,songData[string])
                 })
+                console.log('render',li)
                 return this.$el.append(li)
             })
         }
