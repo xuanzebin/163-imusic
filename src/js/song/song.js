@@ -15,9 +15,11 @@
             this.$el.append(this.template)
         },
         playSong(){
+            this.$el.find('#play').removeClass('active')
             this.$el.find('audio')[0].play()
         },
         pauseSong(){
+            this.$el.find('#play').addClass('active')
             this.$el.find('audio')[0].pause()
         }
     }
@@ -57,8 +59,9 @@
             })
         },
         bindEvents(){
-            this.view.$el.on('click','button',(e)=>{
+            this.view.$el.on('click','.audioControl',(e)=>{
                 if (e.currentTarget.id==='play'){
+                    e.stopPropagation()
                     this.view.playSong()
                 } else {
                     this.view.pauseSong()
