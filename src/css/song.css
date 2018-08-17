@@ -7,32 +7,27 @@ a{text-decoration: none;}
 input{font:inherit;}
 
 /* reset */
-.page{
-    position:relative;
-}
-main{
-    position:relative;
-}
 .backgroundCover{
     position:absolute;
     top:0; left:0;
     width:100vw;
     height:100vh;
+    z-index: 0;
     background-size:cover;
     background-position:center center;
     filter: blur(3px);
 }
-.backgroundCoverWrapper{
-    position:absolute;
+.mainWrapper{
+    position:relative;
     top:0; left:0;
     width:100vw;
     height:100vh;
     background-color: rgba(0,0,0,.5);
 }
-.songAudio{
-    position:relative;
-    left:50%;
-    z-index:1;
+main{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 main .logo{
     position: absolute;
@@ -82,13 +77,18 @@ main .cdPlay{
     width:100%;
     max-width: 342px;
 }
-.coverWrapper{
+.coverWrapperParent{
     position:absolute;
     border-radius:50%;
     width:62%;height:62%;
     max-width: 212px;
     max-height: 212px;
     overflow: hidden;
+    animation: circle 0s infinite linear; 
+    animation-fill-mode: forwards;
+}
+.coverWrapper{
+    width: 100%; height:100%;
     background-size:cover;
     background-position:center center;
     display:flex;
@@ -116,18 +116,15 @@ main .cdPlay{
     display: flex;
     flex-direction: column;
 }
-.mainWrapper main{
-    flex-grow: 1;
-}
 
 
 
 .song-description{
-	/* flex-grow: 1; */
+	flex-grow: 1;
 	color: #AEABAC;
 	text-align: center;
 	line-height: 2;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom:20px;
 }
 .song-description h1{

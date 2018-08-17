@@ -11,7 +11,6 @@
     <div id="app" class="app">
         <div class="page">
             <div class="backgroundCover"></div>
-            <div class="backgroundCoverWrapper"></div>
             <div class="mainWrapper">
                 <main>
                     <div class="logo">
@@ -24,8 +23,10 @@
                                     <img src="./img/songImg/disc.png" alt="">
                                     <div class="disc_light">
                                         <img src="./img/songImg/disc_light.png" alt="">
-                                        <div id="coverWrapper" class="audioControl coverWrapper">
-                                            <img id="play" class="audioControl active" src="./img/songImg/下载.png" alt="">
+                                        <div class="coverWrapperParent">
+                                            <div id="coverWrapper" class="audioControl coverWrapper">
+                                                <img id="play" class="audioControl active" src="./img/songImg/下载.png" alt="">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -39,14 +40,19 @@
                             </div>
                         </div>
                     </div>
+                    <footer>
+                        <span class="open">打 开</span>
+                        <span class="download">下 载</span>
+                    </footer>
                 </main>
-            <footer>
-                <span class="open">打 开</span>
-                <span class="download">下 载</span>
-            </footer>
             </div>
         </div>
     </div>
+    <script>
+        window.onerror=function(message,file,row){
+            alert(message,file,row)
+        }
+    </script>
     <script src="./vendor/jquery-3.3.1.min.js"></script>
     <script src="./vendor/av-min.js"></script>
     <!-- <script src="../node_modules/leancloud-storage/dist/av-min.js"></script> -->
