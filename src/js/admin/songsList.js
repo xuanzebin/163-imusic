@@ -39,7 +39,7 @@
             return query.find().then((response)=>{
                 return this.data.songs=response.map((song)=>{
                     let {id,attributes}=song
-                    return {id,...attributes}
+                    return Object.assign({id},attributes)
                 })
             })
         },

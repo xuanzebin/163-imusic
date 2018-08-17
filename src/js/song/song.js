@@ -33,7 +33,7 @@
             var query = new AV.Query('Song');
             return query.get(id).then((response)=>{
                 let {id,attributes}=response
-                return {id,...attributes}
+                return Object.assign({id},attributes)
             })
         }
     }
@@ -44,6 +44,8 @@
             this.model=model
             this.getSongId()
             this.model.findSong(this.model.data.id).then((response)=>{
+                console.log('response')
+                console.log(response)
                 this.model.data=response
                 this.view.render(this.model.data)
                 this.view.$el.find('audio')[0].onended=()=>{
