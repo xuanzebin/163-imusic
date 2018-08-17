@@ -119,6 +119,38 @@ main .cdPlay{
 .mainWrapper main{
     flex-grow: 1;
 }
+
+
+
+.song-description{
+	/* flex-grow: 1; */
+	color: #AEABAC;
+	text-align: center;
+	line-height: 2;
+	margin-top: 40px;
+}
+.song-description h1{
+	color: white;
+	font-size: 18px;
+}
+.song-description p{
+	font-size: 14px;
+	line-height: 24px;
+}
+.song-description .lines{
+    padding-top:24px;
+	transition: transform 0.3s;
+}
+.song-description .lyric{
+	height: 72px;
+	overflow: hidden;
+}
+.song-description p.active{
+	color: white;
+}
+
+
+
 footer{
     position: absolute;
     bottom:10px;

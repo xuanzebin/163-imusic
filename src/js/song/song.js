@@ -13,6 +13,7 @@
             this.template=this.template.replace('{{url}}',data.url)
             this.$el.find('.coverWrapper').css('background-image',`url(${data.cover})`)
             this.$el.find('.backgroundCover').css('background-image',`url(${data.cover})`)
+            this.$el.find('.song-description>h1').text(data.name)
             this.$el.append(this.template)
         },
         playSong(){
@@ -29,7 +30,6 @@
     let model={
         data:{},
         findSong(id){
-            console.log('id1',id)
             var query = new AV.Query('Song');
             return query.get(id).then((response)=>{
                 let {id,attributes}=response
@@ -46,8 +46,48 @@
             this.model.findSong(this.model.data.id).then((response)=>{
                 this.model.data=response
                 this.view.render(this.model.data)
+                this.view.$el.find('audio')[0].onended=()=>{
+                    this.view.pauseSong()
+                }
+                let array=response.lyrics.split('\n')
+                let regex=/\[([\d:.]+)\](.+)/
+                array.map((value)=>{
+                    let lyrics=value.match(regex)
+                    let time=lyrics[1].split(':')
+                    let minute=time[0]
+                    let second=parseFloat(time[1],10)+parseInt(minute,10)*60
+                    let content=lyrics[2]
+                    let p=document.createElement('p')
+                    p.setAttribute('data-time',second)
+                    p.textContent=content
+                    this.view.$el.find('.lines').append(p)
+                })
+                this.view.$el.find('audio')[0].ontimeupdate=(e)=>{
+                    this.slideLyrics(e.currentTarget.currentTime)
+                }
             })
             this.bindEvents()
+        },
+        slideLyrics(currentTime){
+            let allP=this.view.$el.find('.lines>p')
+            for (let i=0;i<allP.length;i++){
+                if ( i === allP.length-1 ){
+                    let linesHeight=this.view.$el.find('.lines').offset().top
+                    let pHeight=allP.eq(i).offset().top
+                    this.view.$el.find('.lines').css('transform',`translateY(-${allP[i].textContent,pHeight-linesHeight-24}px)`)
+                    allP.eq(i).addClass('active').siblings().removeClass('active')
+                } else {
+                    let previousTime=allP.eq(i).attr('data-time')
+                    let nextTime=allP.eq(i+1).attr('data-time')
+                    if(currentTime>=previousTime &&　currentTime<nextTime){
+                        let linesHeight=this.view.$el.find('.lines').offset().top
+                        let pHeight=allP.eq(i).offset().top
+                        this.view.$el.find('.lines').css('transform',`translateY(-${allP[i].textContent,pHeight-linesHeight-24}px)`)
+                        allP.eq(i).addClass('active').siblings().removeClass('active')
+                        break
+                    }
+                }
+            }
         },
         getSongId(){
             let search=window.location.search

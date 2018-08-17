@@ -22,7 +22,9 @@ body{
 .page main{
     flex-grow: 1;
 }
-
+textarea{
+    resize: none;
+}
 /* aside */
 
 .newSongs{

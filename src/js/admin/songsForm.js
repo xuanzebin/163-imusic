@@ -23,12 +23,16 @@
                 <input name="cover" type="text" value="__cover__">
             </div>
             <div class="row">
+                <label>歌词：</label>
+                <textarea cols=100 rows=10 name="lyrics">__lyrics__</textarea>
+            </div>
+            <div class="row">
                 <input type="submit" value="save"></button>
             </div>
         </form>
         `,
         render(data={}){
-            let playholders=['name','singer','url','cover']
+            let playholders=['name','singer','url','cover','lyrics']
             let html=this.template
             playholders.map((string)=>{
                 html=html.replace(`__${string}__`,data[string]||'')
@@ -42,15 +46,16 @@
         }
     }
     let model={
-        data:{name:'',singer:'',url:'',cover:''},
+        data:{name:'',singer:'',url:'',cover:'',lyrics:''},
         save(){
             var Song = AV.Object.extend('Song');
             var song = new Song();
-            let {name,singer,url,cover}=this.data
+            let {name,singer,url,cover,lyrics}=this.data
             song.set('name',name)
             song.set('singer',singer)
             song.set('url',url)
             song.set('cover',cover)
+            song.set('lyrics',lyrics)
             return song.save().then(function (todo) {
                 return todo
                 console.log('保存成功')
@@ -62,13 +67,15 @@
             // 第一个参数是 className，第二个参数是 objectId
             var song = AV.Object.createWithoutData('Song', this.data.id);
             // 修改属性
-            let {name,singer,url}=this.data
+            let {name,singer,url,cover,lyrics}=this.data
             song.set('name',name)
             song.set('singer',singer)
             song.set('url',url)
             song.set('cover',cover)
+            song.set('lyrics',lyrics)
             // 保存到云端
             return song.save().then((response)=>{
+                console.log(response)
                 return response
             })
         },
@@ -109,10 +116,14 @@
             })
         },
         createSong(){
-            let needs='name singer url cover'.split(' ')
+            let needs='name singer url cover lyrics'.split(' ')
             let data={}
             needs.map((string)=>{
-                data[string]=this.view.$el.find(`input[name=${string}]`).val()
+                if (string==='lyrics'){
+                    data[string]=this.view.$el.find(`textarea[name=${string}]`).val()
+                }else{
+                    data[string]=this.view.$el.find(`input[name=${string}]`).val()
+                }
             })
             this.model.data=data
             this.model.save().then((response)=>{
@@ -124,10 +135,14 @@
             })
         },
         editSong(){
-            let needs='name singer url cover'.split(' ')
+            let needs='name singer url cover lyrics'.split(' ')
             let data={}
             needs.map((string)=>{
-                data[string]=this.view.$el.find(`input[name=${string}]`).val()
+                if (string==='lyrics'){
+                    data[string]=this.view.$el.find(`textarea[name=${string}]`).val()
+                }else{
+                    data[string]=this.view.$el.find(`input[name=${string}]`).val()
+                }
             })
             Object.assign(this.model.data, data)
             console.log(this.model.data)
