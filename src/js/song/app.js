@@ -109,9 +109,16 @@
                     e.stopPropagation()
                     this.view.playSong()
                 } else {
+                    this.recordTransform()
                     this.view.pauseSong()
                 }
             })
+        },
+        recordTransform(){
+            let coverTransform=this.view.$el.find('.coverWrapper').css('transform')
+            let coverWrapperTransform=this.view.$el.find('.coverWrapperParent').css('transform')
+            let transformDeg=coverWrapperTransform==='none'?coverTransform:coverTransform.concat(' ',coverWrapperTransform)
+            this.view.$el.find('.coverWrapperParent').css('transform',transformDeg)
         }
     }
     controller.init(view,model)

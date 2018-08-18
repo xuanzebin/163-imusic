@@ -55,7 +55,7 @@ main .cdPlay{
 }
 .disc{
     position: relative;
-    width:82.6%;
+    width:80.6%;
     margin:0 auto;
     display: flex;
     justify-content: center;
@@ -84,8 +84,6 @@ main .cdPlay{
     max-width: 212px;
     max-height: 212px;
     overflow: hidden;
-    animation: circle 0s infinite linear; 
-    animation-fill-mode: forwards;
 }
 .coverWrapper{
     width: 100%; height:100%;
@@ -94,11 +92,9 @@ main .cdPlay{
     display:flex;
     align-items: center;
     justify-content: center;
-    animation: circle 20s infinite linear; 
-    animation-play-state: paused;
 }
 .coverWrapper.active{
-    animation-play-state: running;
+    animation: circle 20s infinite linear; 
 }
 @keyframes circle{
     0% {transform: rotate(0deg); } 
