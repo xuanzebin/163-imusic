@@ -17,14 +17,14 @@
             this.$el.append(this.template)
         },
         playSong(){
+            this.$el.find('audio')[0].play()
             this.$el.find('#play').removeClass('active')
             this.$el.find('#coverWrapper').addClass('active')
-            this.$el.find('audio')[0].play()
         },
         pauseSong(){
+            this.$el.find('audio')[0].pause()
             this.$el.find('#play').addClass('active')
             this.$el.find('#coverWrapper').removeClass('active')
-            this.$el.find('audio')[0].pause()
         }
     }
     let model={
