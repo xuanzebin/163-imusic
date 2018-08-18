@@ -119,6 +119,10 @@
             let coverWrapperTransform=this.view.$el.find('.coverWrapperParent').css('transform')
             let transformDeg=coverWrapperTransform==='none'?coverTransform:coverTransform.concat(' ',coverWrapperTransform)
             this.view.$el.find('.coverWrapperParent').css('transform',transformDeg)
+            alert('coverWrapperParent')
+            alert(this.view.$el.find('.coverWrapperParent').css('width'))
+            alert('coverWrapperTransform')
+            alert(this.view.$el.find('.coverWrapper').css('width'))
         }
     }
     controller.init(view,model)
