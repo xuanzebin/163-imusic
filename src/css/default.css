@@ -39,12 +39,14 @@ textarea{
 }
 .songList-container{
     flex-grow:1;
+    overflow: auto;
 }
 .songList-container li{
     padding:10px 0 10px 10px;
     border-bottom:1px solid #ddd;
     
 }
+
 .songList-container li.active{
     background: #ddd;
 }

@@ -33,8 +33,21 @@
             var query = new AV.Query('Song');
             return query.get(id).then((response)=>{
                 let {id,attributes}=response
+                if (attributes.amount===undefined){
+                    attributes.amount=0
+                }
+                attributes.amount++
+                this.data=Object.assign({id},attributes)
+                this.updateSong()
                 return Object.assign({id},attributes)
             })
+        },
+        updateSong(){  // 第一个参数是 className，第二个参数是 objectId
+            var todo = AV.Object.createWithoutData('Song', this.data.id);
+            // 修改属性
+            todo.set('amount', this.data.amount);
+            // 保存到云端
+            todo.save();
         }
     }
     let controller={
@@ -44,8 +57,6 @@
             this.model=model
             this.getSongId()
             this.model.findSong(this.model.data.id).then((response)=>{
-                console.log('response')
-                console.log(response)
                 this.model.data=response
                 this.view.render(this.model.data)
                 this.view.$el.find('audio')[0].onended=()=>{
@@ -55,14 +66,16 @@
                 let regex=/\[([\d:.]+)\](.+)/
                 array.map((value)=>{
                     let lyrics=value.match(regex)
-                    let time=lyrics[1].split(':')
-                    let minute=time[0]
-                    let second=parseFloat(time[1],10)+parseInt(minute,10)*60
-                    let content=lyrics[2]
-                    let p=document.createElement('p')
-                    p.setAttribute('data-time',second)
-                    p.textContent=content
-                    this.view.$el.find('.lines').append(p)
+                    if (lyrics!==null){
+                        let time=lyrics[1].split(':')
+                        let minute=time[0]
+                        let second=parseFloat(time[1],10)+parseInt(minute,10)*60
+                        let content=lyrics[2]||' '
+                        let p=document.createElement('p')
+                        p.setAttribute('data-time',second)
+                        p.textContent=content
+                        this.view.$el.find('.lines').append(p) 
+                    }
                 })
                 this.view.$el.find('audio')[0].ontimeupdate=(e)=>{
                     this.slideLyrics(e.currentTarget.currentTime)
@@ -73,13 +86,13 @@
         slideLyrics(currentTime){
             let allP=this.view.$el.find('.lines>p')
             for (let i=0;i<allP.length;i++){
-                if ( i === allP.length-1 ){
+                let previousTime=allP.eq(i).attr('data-time')
+                if ( i === allP.length-1 && currentTime>=previousTime){
                     let linesHeight=this.view.$el.find('.lines').offset().top
                     let pHeight=allP.eq(i).offset().top
                     this.view.$el.find('.lines').css('transform',`translateY(-${allP[i].textContent,pHeight-linesHeight-24}px)`)
                     allP.eq(i).addClass('active').siblings().removeClass('active')
                 } else {
-                    let previousTime=allP.eq(i).attr('data-time')
                     let nextTime=allP.eq(i+1).attr('data-time')
                     if(currentTime>=previousTime &&　currentTime<nextTime){
                         let linesHeight=this.view.$el.find('.lines').offset().top

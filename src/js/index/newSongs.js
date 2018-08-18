@@ -19,6 +19,7 @@
         `,
         render(data){
             let {songs}=data
+            console.log(songs)
             songs.map((songData)=>{
                 let need='id url name singer'.split(' ')
                 let li=this.template
@@ -35,7 +36,8 @@
             selectedId:null,
         },
         findSongs(){
-            var query = new AV.Query('Song');
+            var query = new AV.Query('Song')
+            query.limit(10)
             return query.find().then((response)=>{
                 return this.data.songs=response.map((song)=>{
                     let {id,attributes}=song
